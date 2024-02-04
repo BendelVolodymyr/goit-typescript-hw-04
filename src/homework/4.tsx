@@ -4,15 +4,13 @@ import noop from "lodash/noop";
 type MenuIds = "first" | "second" | "last";
 type Menu = { id: MenuIds; title: string };
 
-type MenuSelected = { selectedMenu: { id?: MenuIds } };
+type MenuSelected = { selectedMenu: SelectedMenu };
 type MenuAction = {
-  onSelectedMenu: React.Dispatch<
-    React.SetStateAction<MenuSelected["selectedMenu"]>
-  >;
+  onSelectedMenu: (arg: SelectedMenu) => void;  
 };
 
 const MenuSelectedContext = createContext<MenuSelected>({
-  selectedMenu: {},
+  selectedMenu: {} as SelectedMenu,
 });
 
 const MenuActionContext = createContext<MenuAction>({
@@ -23,10 +21,10 @@ type PropsProvider = {
   children: React.ReactNode;
 };
 
-type SelectedMenu = {};
+type SelectedMenu = { id: MenuIds };
 
 function MenuProvider({ children }: PropsProvider) {
-  const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>({});
+  const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>({} as SelectedMenu);
 
   const menuContextAction = useMemo(
     () => ({
